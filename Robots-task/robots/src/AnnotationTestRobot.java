@@ -1,53 +1,60 @@
-package primitives;
+import Annotations.RobotClassAnnotation;
+import Annotations.RobotMethodAnnotation;
+import primitives.Target;
 
-public class Robot implements IRobot{
+@RobotClassAnnotation(name = "logic")
+public class AnnotationTestRobot {
     private volatile double m_robotPositionX;
     private volatile double m_robotPositionY;
     private volatile double m_robotDirection;
 
-    private volatile Target target;
+    private Target target;
 
     private static final double maxVelocity = 0.1;
     private static final double maxAngularVelocity = 0.001;
 
-    public Robot(double x, double y, double direct, Target targ){
+    public AnnotationTestRobot(double x, double y, double direct, Target targ){
         m_robotPositionX = x;
         m_robotPositionY = y;
         m_robotDirection = direct;
         target = targ;
     }
 
-    public Robot(){
+    public AnnotationTestRobot(){
         m_robotPositionX = 100;
         m_robotDirection = 100;
         m_robotDirection = 0;
     }
 
-    public double getM_robotPositionX() {
+    @RobotMethodAnnotation(methodName = "getM_robotPositionX")
+    public double justMethod() {
         return m_robotPositionX;
     }
 
-    public double getM_robotPositionY() {
+    @RobotMethodAnnotation(methodName = "getM_robotPositionY")
+    public double justMethod2() {
         return m_robotPositionY;
     }
 
-    public double getM_robotDirection() {
+    @RobotMethodAnnotation(methodName = "getM_robotDirection")
+    public double oneMoreMethod() {
         return m_robotDirection;
     }
 
-    public void onModelUpdateEvent()
+    @RobotMethodAnnotation(methodName = "onModelUpdateEvent")
+    public void update()
     {
-        double distance = Robot.distance(target.getM_targetPositionX(), target.getM_targetPositionY(),
+        double distance = TestRobot.distance(target.getM_targetPositionX(), target.getM_targetPositionY(),
                 m_robotPositionX, m_robotPositionY);
         if (distance < 0.5)
         {
             return;
         }
         double velocity;
-        double angleToTarget = Robot.angleTo(m_robotPositionX, m_robotPositionY,
+        double angleToTarget = TestRobot.angleTo(m_robotPositionX, m_robotPositionY,
                 target.getM_targetPositionX(), target.getM_targetPositionY());
         double angularVelocity;
-        double angle = Robot.asNormalizedRadians(angleToTarget - m_robotDirection);
+        double angle = TestRobot.asNormalizedRadians(angleToTarget - m_robotDirection);
 
         if (angle > Math.PI) angularVelocity = -maxAngularVelocity;
         else angularVelocity = maxAngularVelocity;

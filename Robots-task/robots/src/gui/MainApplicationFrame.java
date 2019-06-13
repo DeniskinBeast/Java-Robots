@@ -10,6 +10,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import MyLoader.MyLoader;
 import log.Logger;
+import primitives.AnnotationsResolver;
 import primitives.IRobot;
 import primitives.RoboJobo;
 import primitives.Target;
@@ -187,6 +188,7 @@ public class MainApplicationFrame extends JFrame {
     {
 
         final JFileChooser chooser =  new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 ".class files", "class");
         chooser.addChoosableFileFilter(filter);
@@ -198,7 +200,17 @@ public class MainApplicationFrame extends JFrame {
                 MyLoader loader = new MyLoader(file);
                 var name = file.getName();
                 var c = loader.loadClass(name.substring(0, name.length() -6));
-                var robot = (IRobot)c.getConstructor(double.class, double.class, double.class, Target.class).newInstance(50, 50, 0, gameWindow.getVisualizer().getTarget());
+                IRobot robot;
+                if (IRobot.class.isAssignableFrom(c)){
+                    robot = (IRobot)c.getConstructor(double.class, double.class, double.class, Target.class).newInstance(50, 50, 0, gameWindow.getVisualizer().getTarget());
+                }
+
+                else
+                {
+                    var annotationResolver = new AnnotationsResolver(c, gameWindow.getVisualizer().getTarget());
+                    annotationResolver.resolveClassMethods();
+                    robot = annotationResolver;
+                }
                 var robotJobber = new RoboJobo(robot, 10);
                 gameWindow.getVisualizer().addRobotLogic(robot);
                 robotJobber.start();

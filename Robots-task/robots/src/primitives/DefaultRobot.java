@@ -29,20 +29,20 @@ public class DefaultRobot implements IRobot{
         return 0;
     }
 
-    @Override
-    public double getMaxVelocity() {
-        return 0;
-    }
-
-    @Override
-    public double getMaxAngularVelocity() {
-        return 0;
-    }
-
-    @Override
-    public void moveRobot(double velocity, double angularVelocity, double duration) {
-
-    }
+//    @Override
+//    public double getMaxVelocity() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public double getMaxAngularVelocity() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void moveRobot(double velocity, double angularVelocity, double duration) {
+//
+//    }
 
     @Override
     public void onModelUpdateEvent(){
